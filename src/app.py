@@ -1,6 +1,9 @@
-from flask import Flask
-app = Flask(__name__)
+from src import request_handler
+from bottle import Bottle, request
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+bottle = Bottle()
+
+
+@bottle.post('/')
+def process_request():
+    return request_handler.handle_request(request.json)
