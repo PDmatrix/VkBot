@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-venv/bin/python -m bottle --server bjoern --bind localhost:5000 src.app:bottle
+gunicorn --bind localhost:5000 --workers=3 --worker-class="meinheld.gmeinheld.MeinheldWorker" src.app:bottle
