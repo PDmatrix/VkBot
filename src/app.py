@@ -16,7 +16,7 @@ class RequestResource(object):
     def on_post(req, resp):
         """Handles POST requests"""
         resp.status = falcon.HTTP_200
-        resp.media = request_handler.handle_request(req.media)
+        resp.body = request_handler.handle_request(req.media)
 
 
 app = falcon.API()
