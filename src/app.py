@@ -1,7 +1,7 @@
 from src import request_handler
 import falcon
 import os
-
+import json
 
 class RequestResource(object):
     @staticmethod
@@ -16,10 +16,10 @@ class RequestResource(object):
     def on_post(req, resp):
         """Handles POST requests"""
         resp.status = falcon.HTTP_200
-        resp.body = request_handler.handle_request(req.media)
+        resp.data = request_handler.handle_request(req.media).encode()
 
 
-app = falcon.API()
+app = falcon.API(media_type=falcon.MEDIA_TEXT)
 request = RequestResource()
 
 app.add_route('/', request)
