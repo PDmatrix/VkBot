@@ -4,9 +4,6 @@ import os
 
 
 class RequestResource(object):
-    def __init__(self):
-        request_handler.configure_seq_logger()
-
     @staticmethod
     def on_get(req, resp):
         """Handles GET requests"""
