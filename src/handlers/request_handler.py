@@ -10,6 +10,7 @@ def handle_request(data):
     if data['type'] == 'confirmation':
         return os.environ.get('VK_CONFIRMATION_TOKEN')
     elif data['type'] == 'message_new' or data['type'] == 'message_edit':
+        logger.info("Request {request}", request=data)
         try:
             message_handler.handle_message(data['object'])
         except Exception:
