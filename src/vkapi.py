@@ -192,7 +192,6 @@ def settings_menu_button():
 def send_message_decorator(function_to_decorate):
     def try_to_send(*args, **kwargs):
         try:
-            logger.info("Sending message", **kwargs)
             function_to_decorate(*args, **kwargs)
         except Exception as e:
             logger.error("Send message function failed: {function}\nSend error: {exception}",
@@ -244,5 +243,4 @@ def send_message_without_keyboard(user_id, token, message):
 
 @send_message_decorator
 def send(peer_id, message):
-    response = vk.messages.send(peer_id=peer_id, message=message)
-    logger.info("Send message result {response}", response=response)
+    vk.messages.send(peer_id=peer_id, message=message)

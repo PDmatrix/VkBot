@@ -1,11 +1,10 @@
 import os
 from src.handlers import message_handler
 from src import logger
+import traceback
 
 
 def handle_request(data):
-    logger.info("Request {Request}", Request=data)
-
     if 'type' not in data.keys():
         return 'not vk'
     if data['type'] == 'confirmation':
@@ -13,12 +12,13 @@ def handle_request(data):
     elif data['type'] == 'message_new' or data['type'] == 'message_edit':
         try:
             message_handler.handle_message(data['object'])
-        except Exception as e:
-            logger.error("Exception {exception} occurred while handling request: {request}",
-                         exception=str(e), requests=data)
+        except Exception:
+            logger.error("Exception occurred while handling request: {request}",
+                         exception=traceback.format_exc(), request=data)
             return 'error'
         return 'ok'
-    elif data['type'] == 'message_reply' or data['type'] == 'message_typing_state':
+    elif data['type'] == 'message_reply':
+        logger.info("Response {response}", response=data)
         return 'ok'
     return 'unknown'
 
