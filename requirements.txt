@@ -1,5 +1,6 @@
 certifi==2018.8.24
 chardet==3.0.4
+enum34==1.1.6
 falcon==1.4.1
 greenlet==0.4.15
 gunicorn==19.9.0
@@ -10,3 +11,4 @@ python-mimeparse==1.6.0
 requests==2.19.1
 six==1.11.0
 urllib3==1.23
+vk-api==11.1.0

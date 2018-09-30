@@ -1,4 +1,4 @@
-from src import request_handler
+from src.handlers import request_handler
 import falcon
 import os
 
