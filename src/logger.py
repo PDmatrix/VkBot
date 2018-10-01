@@ -17,7 +17,8 @@ def _get_log_level(level):
 
 def _log(message, level, **kwargs):
     server_url = os.environ.get("SEQ_SERVER_URL").rstrip('/')
-    headers = {"X-Seq-ApiKey": os.environ.get("SEQ_API_KEY", "")}
+    headers = {"X-Seq-ApiKey": os.environ.get("SEQ_API_KEY", ""),
+               "Authorization": "Basic " + os.environ.get("AUTHORIZATION_BASE64")}
 
     requests.post(f"{server_url}/api/events/raw?clef",
                   headers=headers,
