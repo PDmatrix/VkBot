@@ -20,9 +20,21 @@ def _log(message, level, **kwargs):
     headers = {"X-Seq-ApiKey": os.environ.get("SEQ_API_KEY", ""),
                "Authorization": "Basic " + os.environ.get("AUTHORIZATION_BASE64")}
 
+    json = {
+        '@t': datetime.datetime.utcnow().isoformat(),
+        '@l': level,
+        '@mt': message
+    }
+
+    exception = kwargs.pop('exception', None)
+    if exception is not None:
+        json['@x'] = exception
+
+    json.update(**kwargs)
+
     requests.post(f"{server_url}/api/events/raw?clef",
                   headers=headers,
-                  json={'@t': datetime.datetime.utcnow().isoformat(), '@l': level,  '@mt': message, **kwargs})
+                  json=json)
 
 
 def _run_thread(message, level, **kwargs):

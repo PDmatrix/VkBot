@@ -1,3 +1,5 @@
+# coding=utf-8
+import traceback
 import vk_api
 import os
 import json
@@ -193,10 +195,9 @@ def send_message_decorator(function_to_decorate):
     def try_to_send(*args, **kwargs):
         try:
             function_to_decorate(*args, **kwargs)
-        except Exception as e:
-            logger.error("Send message function failed: {function}\nSend error: {exception}",
-                         function=function_to_decorate, exception=str(e))
-
+        except Exception:
+            logger.error("Send message function failed: {function}",
+                         function=function_to_decorate.__name__, exception=traceback.format_exc())
     return try_to_send
 
 
