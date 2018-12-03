@@ -1,16 +1,12 @@
 from src.handlers import request_handler
-import falcon
+from japronto import Application
+import os
+
+def handler(req):
+    return req.Response(text=request_handler.handle_request(req.json))
 
 
-class RequestResource(object):
-    @staticmethod
-    def on_post(req, resp):
-        """Handles POST requests"""
-        resp.status = falcon.HTTP_200
-        resp.data = request_handler.handle_request(req.media).encode()
-
-
-app = falcon.API(media_type=falcon.MEDIA_TEXT)
-request = RequestResource()
-
-app.add_route('/', request)
+app = Application()
+print(os.environ)
+app.router.add_route('/api', handler)
+app.run(host='0.0.0.0', debug=True, worker_num=5, port=8080)

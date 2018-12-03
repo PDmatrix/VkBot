@@ -4,7 +4,7 @@ import vk_api
 import os
 import json
 from src import logger
-
+from random import randint
 
 vk_session = vk_api.VkApi(token=os.environ.get("VK_TOKEN"))
 vk = vk_session.get_api()
@@ -191,6 +191,13 @@ def settings_menu_button():
     return [about_button, change_group_button, set_timer_button, unset_timer_button, back_button]
 
 
+_RAND_MAX = 2147483647
+
+
+def _get_random_id():
+    return randint(1, _RAND_MAX)
+
+
 def send_message_decorator(function_to_decorate):
     def try_to_send(*args, **kwargs):
         try:
@@ -206,13 +213,14 @@ def send_message_with_keyboard(user_id, token, message, keyboard_state):
     if keyboard_state is not None:
         buttons = get_buttons(keyboard_state)
         if buttons is None:
-            vk.messages.send(user_id=user_id, token=token, message=message)
+            vk.messages.send(user_id=user_id, token=token, message=message, random_id=_get_random_id())
         else:
             vk.messages.send(user_id=user_id, token=token, message=get_translation(keyboard_state),
+                             random_id=_get_random_id(),
                              keyboard=json.dumps({"one_time": False, "buttons": buttons}, ensure_ascii=False).encode(
                                  "utf-8"))
     else:
-        vk.messages.send(user_id=user_id, token=token, message=message)
+        vk.messages.send(user_id=user_id, token=token, message=message, random_id=_get_random_id())
 
 
 @send_message_decorator
@@ -220,28 +228,29 @@ def send_message_with_keyboard_to_many(user_ids, token, message, keyboard_state)
     if keyboard_state is not None:
         buttons = get_buttons(keyboard_state)
         if buttons is None:
-            vk.messages.send(user_ids=user_ids, token=token, message=message)
+            vk.messages.send(user_ids=user_ids, token=token, message=message, random_id=_get_random_id())
         else:
             vk.messages.send(user_ids=user_ids, token=token, message=get_translation(keyboard_state),
+                             random_id=_get_random_id(),
                              keyboard=json.dumps({"one_time": False, "buttons": buttons}, ensure_ascii=False).encode(
                                  "utf-8"))
     else:
-        vk.messages.send(user_ids=user_ids, token=token, message=message)
+        vk.messages.send(user_ids=user_ids, token=token, message=message, random_id=_get_random_id())
 
 
 @send_message_decorator
 def send_message_to_all(user_id, token, message, keyboard_state):
-    vk.messages.send(user_id=user_id, token=token, message=message,
+    vk.messages.send(user_id=user_id, token=token, message=message,random_id=_get_random_id(),
                      keyboard=json.dumps({"one_time": False, "buttons": get_buttons(keyboard_state)},
                                          ensure_ascii=False).encode("utf-8"))
 
 
 @send_message_decorator
 def send_message_without_keyboard(user_id, token, message):
-    vk.messages.send(user_id=user_id, token=token, message=message,
+    vk.messages.send(user_id=user_id, token=token, message=message, random_id=_get_random_id(),
                      keyboard=json.dumps({"one_time": False, "buttons": []}), ensure_ascii=False)
 
 
 @send_message_decorator
 def send(peer_id, message):
-    vk.messages.send(peer_id=peer_id, message=message)
+    vk.messages.send(peer_id=peer_id, message=message, random_id=_get_random_id())
