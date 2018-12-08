@@ -17,8 +17,10 @@ def _get_log_level(level):
 
 def _log(message, level, **kwargs):
     server_url = os.environ.get("SEQ_SERVER_URL").rstrip('/')
-    headers = {"X-Seq-ApiKey": os.environ.get("SEQ_API_KEY", ""),
-               "Authorization": "Basic " + os.environ.get("AUTHORIZATION_BASE64")}
+    headers = {
+        "X-Seq-ApiKey": os.environ.get("SEQ_API_KEY", ""),
+        "Authorization": "Basic " + os.environ.get("AUTHORIZATION_BASE64")
+    }
 
     json = {
         '@t': datetime.datetime.utcnow().isoformat(),
@@ -32,13 +34,16 @@ def _log(message, level, **kwargs):
 
     json.update(**kwargs)
 
-    requests.post(f"{server_url}/api/events/raw?clef",
-                  headers=headers,
-                  json=json)
+    requests.post(
+        f"{server_url}/api/events/raw?clef", headers=headers, json=json)
 
 
 def _run_thread(message, level, **kwargs):
-    thr = threading.Thread(target=_log, args=(message, level,), kwargs={**kwargs})
+    thr = threading.Thread(
+        target=_log, args=(
+            message,
+            level,
+        ), kwargs={**kwargs})
     thr.start()
 
 
