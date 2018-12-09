@@ -16,11 +16,20 @@ def _get_log_level(level):
 
 
 def _log(message, level, **kwargs):
-    server_url = os.environ.get("SEQ_SERVER_URL").rstrip('/')
-    headers = {
-        "X-Seq-ApiKey": os.environ.get("SEQ_API_KEY", ""),
-        "Authorization": "Basic " + os.environ.get("AUTHORIZATION_BASE64")
-    }
+    server_url = os.environ.get("SEQ_SERVER_URL", None)
+    if server_url is None:
+        return
+
+    server_url = server_url.rstrip("/")
+    headers = {}
+
+    api_key = os.environ.get("SEQ_API_KEY", None)
+    if api_key is not None:
+        headers.update({"X-Seq-ApiKey": api_key})
+
+    authorization = os.environ.get("AUTHORIZATION_BASE64", None)
+    if authorization is not None:
+        headers.update({"Authorization": f"Basic {authorization}"})
 
     json = {
         '@t': datetime.datetime.utcnow().isoformat(),
@@ -39,12 +48,13 @@ def _log(message, level, **kwargs):
 
 
 def _run_thread(message, level, **kwargs):
-    thr = threading.Thread(
+    threading.Thread(
         target=_log, args=(
             message,
             level,
-        ), kwargs={**kwargs})
-    thr.start()
+        ), kwargs={
+            **kwargs
+        }).start()
 
 
 def verbose(message, **kwargs):

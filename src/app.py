@@ -1,5 +1,7 @@
 from src.handlers import request_handler
 from japronto import Application
+from src.init import init_bot
+import os
 
 
 def handler(req):
@@ -8,4 +10,9 @@ def handler(req):
 
 app = Application()
 app.router.add_route('/api', handler)
-app.run(host='0.0.0.0', debug=True, worker_num=5, port=8080)
+app.run(
+    host='0.0.0.0',
+    debug=True,
+    worker_num=os.environ.get("WORKER_NUM", 3),
+    port=8080)
+init_bot()

@@ -254,19 +254,15 @@ def send_message_decorator(function_to_decorate):
 
 
 @send_message_decorator
-def send_message_with_keyboard(user_id, token, message, keyboard_state):
+def send_message_with_keyboard(user_id, message, keyboard_state):
     if keyboard_state is not None:
         buttons = get_buttons(keyboard_state)
         if buttons is None:
             vk.messages.send(
-                user_id=user_id,
-                token=token,
-                message=message,
-                random_id=_get_random_id())
+                user_id=user_id, message=message, random_id=_get_random_id())
         else:
             vk.messages.send(
                 user_id=user_id,
-                token=token,
                 message=get_translation(keyboard_state),
                 random_id=_get_random_id(),
                 keyboard=json.dumps({
@@ -276,27 +272,19 @@ def send_message_with_keyboard(user_id, token, message, keyboard_state):
                                     ensure_ascii=False).encode("utf-8"))
     else:
         vk.messages.send(
-            user_id=user_id,
-            token=token,
-            message=message,
-            random_id=_get_random_id())
+            user_id=user_id, message=message, random_id=_get_random_id())
 
 
 @send_message_decorator
-def send_message_with_keyboard_to_many(user_ids, token, message,
-                                       keyboard_state):
+def send_message_with_keyboard_to_many(user_ids, message, keyboard_state):
     if keyboard_state is not None:
         buttons = get_buttons(keyboard_state)
         if buttons is None:
             vk.messages.send(
-                user_ids=user_ids,
-                token=token,
-                message=message,
-                random_id=_get_random_id())
+                user_ids=user_ids, message=message, random_id=_get_random_id())
         else:
             vk.messages.send(
                 user_ids=user_ids,
-                token=token,
                 message=get_translation(keyboard_state),
                 random_id=_get_random_id(),
                 keyboard=json.dumps({
@@ -306,17 +294,13 @@ def send_message_with_keyboard_to_many(user_ids, token, message,
                                     ensure_ascii=False).encode("utf-8"))
     else:
         vk.messages.send(
-            user_ids=user_ids,
-            token=token,
-            message=message,
-            random_id=_get_random_id())
+            user_ids=user_ids, message=message, random_id=_get_random_id())
 
 
 @send_message_decorator
-def send_message_to_all(user_id, token, message, keyboard_state):
+def send_message_to_all(user_id, message, keyboard_state):
     vk.messages.send(
         user_id=user_id,
-        token=token,
         message=message,
         random_id=_get_random_id(),
         keyboard=json.dumps({
@@ -327,10 +311,9 @@ def send_message_to_all(user_id, token, message, keyboard_state):
 
 
 @send_message_decorator
-def send_message_without_keyboard(user_id, token, message):
+def send_message_without_keyboard(user_id, message):
     vk.messages.send(
         user_id=user_id,
-        token=token,
         message=message,
         random_id=_get_random_id(),
         keyboard=json.dumps({
