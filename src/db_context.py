@@ -6,6 +6,8 @@ import os
 
 def db_query(query):
     result = None
+    conn = None
+    cur = None
     try:
         conn = psycopg2.connect(os.environ.get('DATABASE_LIBPQ'))
         cur = conn.cursor()
@@ -25,40 +27,13 @@ def db_query(query):
             exception=str(e))
         result = None
     finally:
-        cur.close()
-        conn.close()
+        if conn is not None:
+            conn.close()
+        if cur is not None:
+            cur.close()
         return result
 
 
-'''def db_query(query):
-    """Основная функция для связи с базой данных"""
-    connection = None
-    try:
-        connection = sqlite3.connect('FlaskApp/VkBot.db')
-        cursor = connection.cursor()
-        cursor.execute(query)
-        data = cursor.fetchall()
-        try:
-            connection.commit()
-        except Exception:
-            pass
-    except Exception as e:
-        try:
-            logger.error(
-                "Query Failed: {query}\nDatabase error: {exception}",
-                query=query,
-                error=str(e))
-        except:
-            pass
-        print(
-            f'Query Failed: {query}\nDatabase error:{str(e)}', file=sys.stderr)
-        data = None
-    finally:
-        if connection is not None:
-            connection.close()
-
-    return data
-'''
 '''
 -------------------------------------------------------------------------------------------------
 ФУНКЦИИ ДЛЯ РАСПИСАНИЯ
@@ -169,7 +144,7 @@ def get_ids_by_group_and_timer(group_name, timer=1):
 
 def is_user_exist(user_id):
     """Существует ли пользователь в главной таблице"""
-    return db_query(f'SELECT id ' f'FROM users ' f'WHERE id = {user_id}') != []
+    return db_query(f'SELECT id FROM users WHERE id = {user_id}') != []
 
 
 def create_user(user_id, group_name='Пр1-15', timer=1):

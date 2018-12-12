@@ -3,6 +3,7 @@ from src.handlers import message_handler
 from src import logger
 import traceback
 import time
+from src import vkapi
 
 
 def handle_request(data):
@@ -14,6 +15,7 @@ def handle_request(data):
         logger.info("Processing request...", request=data)
         try:
             start_time = time.time()
+            raise Exception("Test")
             message_handler.handle_message(data['object'])
             logger.info(
                 "Time elapsed: {elapsed}s",
@@ -23,7 +25,8 @@ def handle_request(data):
                 "Exception occurred while handling request: {request}",
                 exception=traceback.format_exc(),
                 request=data)
-            return 'error'
+            vkapi.send(data['object']['peer_id'],
+                       "Возникла ошибка. Пожалуйста, попробуйте снова.")
         return 'ok'
     elif data['type'] == 'message_reply':
         logger.info("Responding...", response=data)
