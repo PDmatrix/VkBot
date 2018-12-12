@@ -15,7 +15,6 @@ def handle_request(data):
         logger.info("Processing request...", request=data)
         try:
             start_time = time.time()
-            raise Exception("Test")
             message_handler.handle_message(data['object'])
             logger.info(
                 "Time elapsed: {elapsed}s",
