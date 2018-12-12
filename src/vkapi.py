@@ -4,12 +4,21 @@ import os
 import json
 from src import logger
 from random import randint
+import re
 
 vk_session = vk_api.VkApi(token=os.environ.get("VK_TOKEN"))
 vk = vk_session.get_api()
 
 sub_menu_button_color = "default"
 action_button_color = "primary"
+
+first_cap_re = re.compile('(.)([A-Z][a-z]+)')
+all_cap_re = re.compile('([a-z0-9])([A-Z])')
+
+
+def convert(name):
+    s1 = first_cap_re.sub(r'\1_\2', name)
+    return all_cap_re.sub(r'\1_\2', s1).lower()
 
 
 def get_buttons(keyboard_state):
@@ -18,7 +27,7 @@ def get_buttons(keyboard_state):
         "schedule_menu": schedule_menu_button(),
         "replacements_menu": replacements_menu_button(),
         "settings_menu": settings_menu_button(),
-    }.get(keyboard_state)
+    }.get(convert(keyboard_state))
 
 
 def get_translation(keyboard_state):
@@ -27,7 +36,7 @@ def get_translation(keyboard_state):
         "schedule_menu": "Меню Расписание",
         "replacements_menu": "Меню Замены",
         "settings_menu": "Меню Настройки",
-    }.get(keyboard_state)
+    }.get(convert(keyboard_state))
 
 
 '''

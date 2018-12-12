@@ -86,7 +86,6 @@ def handle_message(data):
                 user_id, f'Пожалуйста, введите свою группу.\n'
                 f'Список групп:\n{", ".join(db_context.get_groups())}')
             db_context.create_user_temp(user_id)
-            return
         elif message.lower().title() not in db_context.get_groups():
             vkapi.send_message_without_keyboard(
                 user_id, f'Пожалуйста, введите свою группу.\n'
@@ -94,11 +93,11 @@ def handle_message(data):
         else:
             vkapi.send_message_with_keyboard(
                 user_id, f'Выбрана группа {message.lower().title()}.\n'
-                f'Введите \'помощь\', чтобы узнать команды', "MainMenu")
+                f'Введите \'помощь\', чтобы узнать команды', "main_menu")
             db_context.create_user(user_id, message,
                                    db_context.get_users_temp_timer(user_id))
             db_context.delete_user_temp(user_id)
-            return 'User created'
+        return
     try:
         button = json.loads(data['payload'])['button']
     except Exception:

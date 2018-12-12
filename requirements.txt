@@ -1,4 +1,6 @@
+APScheduler==3.5.3
 asn1crypto==0.24.0
+beautifulsoup4==4.6.3
 certifi==2018.11.29
 cffi==1.11.5
 chardet==3.0.4
@@ -6,10 +8,13 @@ cryptography==2.4.2
 enum34==1.1.6
 idna==2.7
 japronto==0.1.2
+psycopg2==2.7.6.1
 pycparser==2.19
 pyOpenSSL==18.0.0
+pytz==2018.7
 requests==2.20.1
 six==1.11.0
+tzlocal==1.5.1
 urllib3==1.24.1
 uvloop==0.11.3
 vk-api==11.3.0
