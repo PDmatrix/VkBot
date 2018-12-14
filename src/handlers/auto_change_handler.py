@@ -12,6 +12,7 @@ from src import vkapi
 
 def _send_change(group: str, change: str):
     global groups_with_change
+    logger.debug("_send_change", grp=str(groups_with_change))
     ids_group = db_context.get_ids_by_group_and_timer(group)
     if ids_group:
         time.sleep(2)
@@ -24,6 +25,7 @@ def _send_change(group: str, change: str):
 def _check_change():
     global groups_with_change
     groups = db_context.get_groups()
+    logger.debug("One tick", groups=str(groups), grp=str(groups_with_change))
     for group in groups:
         change = replacements.get_change(group)
         if change != groups_with_change[group] and change != Replacements.server_unavailable.value \

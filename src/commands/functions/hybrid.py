@@ -20,7 +20,7 @@ def get_hybrid(group="пр1-15", day="завтра"):
                 if replacements.get_star(day) == 2:
                     new_rsps.append(rsps[i])
             else:
-                if replacements.getStar(day) == 1:
+                if replacements.get_star(day) == 1:
                     new_rsps.append(rsps[i])
     rsps = new_rsps
     if zamen[0] == Replacements.not_ready.value or \

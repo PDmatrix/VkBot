@@ -8,6 +8,8 @@ def handler(req):
     return req.Response(text=request_handler.handle_request(req.json))
 
 
+print("Init")
+init_bot()
 app = Application()
 app.router.add_route('/api', handler)
 app.run(
@@ -15,4 +17,3 @@ app.run(
     debug=True,
     worker_num=os.environ.get("WORKER_NUM", 3),
     port=8080)
-init_bot()
