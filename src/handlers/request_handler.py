@@ -12,13 +12,13 @@ def handle_request(data):
     if data['type'] == 'confirmation':
         return os.environ.get('VK_CONFIRMATION_TOKEN')
     elif data['type'] == 'message_new' or data['type'] == 'message_edit':
-        logger.info("Processing request...", request=data['object'])
         try:
             start_time = time.time()
             message_handler.handle_message(data['object'])
             logger.info(
                 "Time elapsed: {elapsed}s",
-                elapsed=f"{time.time() - start_time:.2f}")
+                elapsed=f"{time.time() - start_time:.2f}",
+                request=data['object'])
         except Exception:
             logger.error(
                 "Exception occurred while handling request: {request}",
