@@ -16,8 +16,9 @@ def handle_request(data):
             start_time = time.time()
             message_handler.handle_message(data['object'])
             logger.info(
-                "Time elapsed: {elapsed}s",
+                "{message}",
                 elapsed=f"{time.time() - start_time:.2f}",
+                message=data['object']['text'],
                 request=data['object'])
         except Exception:
             logger.error(
