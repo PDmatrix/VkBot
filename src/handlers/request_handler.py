@@ -17,9 +17,9 @@ def handle_request(data):
             #message_handler.handle_message(data['object'])
             vkapi.send(data['object']['peer_id'], "Технические неполадки, бот будет скоро доступен.")
             logger.info(
-                "{message}",
+                "{msg}",
                 elapsed=f"{time.time() - start_time:.2f}",
-                message=data['object']['text'],
+                msg=data['object']['text'],
                 request=data['object'])
         except Exception:
             logger.error(
