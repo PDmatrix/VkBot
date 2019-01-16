@@ -14,7 +14,8 @@ def handle_request(data):
     elif data['type'] == 'message_new' or data['type'] == 'message_edit':
         try:
             start_time = time.time()
-            message_handler.handle_message(data['object'])
+            #message_handler.handle_message(data['object'])
+            vkapi.send(data['object']['peer_id'], "Технические неполадки, бот будет скоро доступен.")
             logger.info(
                 "{message}",
                 elapsed=f"{time.time() - start_time:.2f}",
