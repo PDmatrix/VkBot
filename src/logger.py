@@ -1,7 +1,6 @@
 import requests
 import datetime
 import os
-import threading
 
 
 def _get_log_level(level):
@@ -47,35 +46,25 @@ def _log(message, level, **kwargs):
         f"{server_url}/api/events/raw?clef", headers=headers, json=json)
 
 
-def _run_thread(message, level, **kwargs):
-    threading.Thread(
-        target=_log, args=(
-            message,
-            level,
-        ), kwargs={
-            **kwargs
-        }).start()
-
-
 def verbose(message, **kwargs):
-    _run_thread(message, _get_log_level("verbose"), **kwargs)
+    _log(message, _get_log_level("verbose"), **kwargs)
 
 
 def debug(message, **kwargs):
-    _run_thread(message, _get_log_level("debug"), **kwargs)
+    _log(message, _get_log_level("debug"), **kwargs)
 
 
 def info(message, **kwargs):
-    _run_thread(message, _get_log_level("info"), **kwargs)
+    _log(message, _get_log_level("info"), **kwargs)
 
 
 def warning(message, **kwargs):
-    _run_thread(message, _get_log_level("warning"), **kwargs)
+    _log(message, _get_log_level("warning"), **kwargs)
 
 
 def error(message, **kwargs):
-    _run_thread(message, _get_log_level("error"), **kwargs)
+    _log(message, _get_log_level("error"), **kwargs)
 
 
 def fatal(message, **kwargs):
-    _run_thread(message, _get_log_level("fatal"), **kwargs)
+    _log(message, _get_log_level("fatal"), **kwargs)
